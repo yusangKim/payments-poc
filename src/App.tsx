@@ -117,11 +117,11 @@ function App() {
 
         <input type="hidden" name="mercntId" value="M2286221" />
 
-        <input type="hidden" name="ordNo" value="test2952" />
+        <input type="hidden" name="ordNo" value="test5435" />
 
         <input type="hidden" name="trDay" value="20221018" />
 
-        <input type="hidden" name="trTime" value="122952" />
+        <input type="hidden" name="trTime" value="135435" />
 
         <input
           type="hidden"
@@ -166,7 +166,7 @@ function App() {
         <input
           type="hidden"
           name="signature"
-          value="605fdb55a6648a3a29d7e8a7a27c03703db4848b1887a2d5f0d4a51762402d00"
+          value="cdf5dc0f64f4f9b7318efd308630d51afc3da2bc813cff7f9ff3f8db93ce86b1"
         />
 
         <button type="submit">결제요청</button>
