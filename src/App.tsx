@@ -151,7 +151,11 @@ function App() {
 
         <input type="hidden" name="custCi" value="" />
 
-        <input type="hidden" name="callbackUrl" value="http://localhost:3000" />
+        <input
+          type="hidden"
+          name="callbackUrl"
+          value="https://payments-poc.vercel.app/"
+        />
 
         <input type="hidden" name="cancelUrl" value="" />
 
