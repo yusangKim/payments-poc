@@ -113,11 +113,11 @@ export const Home = () => {
 
         <input type="hidden" name="mercntId" value="M2286221" />
 
-        <input type="hidden" name="ordNo" value="test0312" />
+        <input type="hidden" name="ordNo" value="test0524" />
 
         <input type="hidden" name="trDay" value="20221018" />
 
-        <input type="hidden" name="trTime" value="150312" />
+        <input type="hidden" name="trTime" value="150524" />
 
         <input
           type="hidden"
@@ -150,7 +150,7 @@ export const Home = () => {
         <input
           type="hidden"
           name="callbackUrl"
-          value="https://kkr-payment.goerli-alpha.kn.croffle.me/api/bank-payments/callback"
+          value="https://payments-poc.vercel.app/callback"
         />
 
         <input type="hidden" name="cancelUrl" value="" />
@@ -166,7 +166,7 @@ export const Home = () => {
         <input
           type="hidden"
           name="signature"
-          value="8b12932a4cd4f62b066ac913c1a6eca0419604b450eb533333d2f5b10a1f729e"
+          value="26cf0d053fb9973d8f4a3d2870013b789cb665446da8bf7d43a747244072b4a8"
         />
 
         <button type="submit">결제요청</button>
