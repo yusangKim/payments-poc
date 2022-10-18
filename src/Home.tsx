@@ -61,10 +61,7 @@ export const Home = () => {
     formData.append("criPsblYn", "Y");
     formData.append("addDeductionYn", "N");
     formData.append("shopNm", "test shop");
-    formData.append(
-      "callbackUrl",
-      "https://kkr-payment.goerli-alpha.kn.croffle.me/api/bank-payments/callback"
-    );
+    formData.append("callbackUrl", "https://payments-poc.vercel.app/callback");
     formData.append("regularpayYn", "N");
     formData.append(
       "signature",
@@ -116,11 +113,11 @@ export const Home = () => {
 
         <input type="hidden" name="mercntId" value="M2286221" />
 
-        <input type="hidden" name="ordNo" value="test5457" />
+        <input type="hidden" name="ordNo" value="test0312" />
 
         <input type="hidden" name="trDay" value="20221018" />
 
-        <input type="hidden" name="trTime" value="145457" />
+        <input type="hidden" name="trTime" value="150312" />
 
         <input
           type="hidden"
@@ -169,7 +166,7 @@ export const Home = () => {
         <input
           type="hidden"
           name="signature"
-          value="c25412dbdc4c81eb7a5096e746bdac3527b33ce8900f7eee7fbd40abd3dea69f"
+          value="8b12932a4cd4f62b066ac913c1a6eca0419604b450eb533333d2f5b10a1f729e"
         />
 
         <button type="submit">결제요청</button>
