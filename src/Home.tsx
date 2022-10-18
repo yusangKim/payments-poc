@@ -153,7 +153,7 @@ export const Home = () => {
         <input
           type="hidden"
           name="callbackUrl"
-          value="https://payments-poc.vercel.app/"
+          value="https://payments-poc.vercel.app/callback"
         />
 
         <input type="hidden" name="cancelUrl" value="" />
