@@ -10,12 +10,10 @@ export const Home = () => {
   const [collectionAddress, setCollectionAddress] = useState(
     "0x7810107ea3a38639b1ca9b1600f8a3c17c8294de"
   );
-  const [productCount, setProductCount] = useState(2);
+  const [productCount, setProductCount] = useState(28400);
   const [accountAddress, setAccountAddress] = useState(
     "0x7810107ea3a38639b1ca9b1600f8a3c17c8294de"
   );
-
-  //해싱 API 파라미터를 받는데 필요한 값 END
 
   //UI를 띄우기 위해 필요한 값 START
   const initialPaymentsParametersValue = {
@@ -41,15 +39,6 @@ export const Home = () => {
   const [paymentsParameters, setPaymentsParameters] =
     useState<IGetPaymentsParametersResponse>(initialPaymentsParametersValue);
 
-  const getParameters = async () => {
-    const res = await getPaymentsParameters({
-      productCount,
-      accountAddress,
-      collectionAddress,
-    });
-    return res;
-  };
-
   const handleSubmit = async (info: React.FormEvent<HTMLFormElement>) => {
     //TODO 1: 수량 , collectionAddress, collectionTitle 백엔드에 POST로 넘겨주기
 
@@ -59,14 +48,30 @@ export const Home = () => {
       collectionAddress,
     });
 
-    console.log("res: ", res);
+    setPaymentsParameters({
+      hdInfo: res.data.hdInfo,
+      apiVer: res.data.apiVer,
+      processType: res.data.processType,
+      mercntId: res.data.mercntId,
+      ordNo: res.data.ordNo,
+      trDay: res.data.trDay,
+      trTime: res.data.trTime,
+      trPrice: res.data.trPrice,
+      productNm: res.data.productNm,
+      criPsblYn: res.data.criPsblYn,
+      dutyFreeYn: res.data.dutyFreeYn,
+      addDeductionYn: res.data.addDeductionYn,
+      shopNm: res.data.shopNm,
+      callbackUrl: res.data.callbackUrl,
+      regularpayYn: res.data.regularpayYn,
+      mercntParam1: res.data.mercntParam1,
+      signature: res.data.signature,
+    });
 
-    //TODO 2: 백엔드에서 받은 response를 가지고 formData 세팅 후, SettlePay.execute(info obj)로 결제창 띄우기
+    console.log("res: ", res.data);
     info.preventDefault();
-    // console.log(info.target);
-    // SettlePay.execute(info.target);
-
-    //TODO 2: 결제 팝업창 띄운 다음에 백엔드에 API GET요청 (최종 결제 응답을 받기 위해)
+    console.log(info.target);
+    SettlePay.execute(info.target);
   };
 
   return (
@@ -75,7 +80,6 @@ export const Home = () => {
         name="sampleFm"
         className="flex flex-col gap-10 justify-center items-center pt-10"
         onSubmit={(e) => {
-          e.preventDefault();
           handleSubmit(e);
         }}
       >
