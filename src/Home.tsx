@@ -1,75 +1,72 @@
 import React, { useState } from "react";
-import { getEncode } from "./apis/getEncode";
-import { getHash } from "./apis/getHash";
+import getPaymentsParameters, {
+  IGetPaymentsParametersResponse,
+} from "./apis/getPaymentsParameters";
+
 import { SettlePay } from "./payments/AccountPayment";
 
 export const Home = () => {
-  const formData = new FormData();
+  //해싱 API 파라미터를 받는데 필요한 값 START
+  const [collectionAddress, setCollectionAddress] = useState(
+    "0x7810107ea3a38639b1ca9b1600f8a3c17c8294de"
+  );
+  const [productCount, setProductCount] = useState(2);
+  const [accountAddress, setAccountAddress] = useState(
+    "0x7810107ea3a38639b1ca9b1600f8a3c17c8294de"
+  );
 
-  const handleSubmit = (info: React.FormEvent<HTMLFormElement>) => {
-    getHashingStr();
+  //해싱 API 파라미터를 받는데 필요한 값 END
 
-    //TODO 1: 수량 , collectionAddress, collectionTitle 백엔드에 넘겨주기
+  //UI를 띄우기 위해 필요한 값 START
+  const initialPaymentsParametersValue = {
+    hdInfo: "",
+    apiVer: "",
+    processType: "",
+    mercntId: "",
+    ordNo: "",
+    trDay: "",
+    trTime: "",
+    trPrice: "",
+    productNm: "",
+    criPsblYn: "",
+    dutyFreeYn: "",
+    addDeductionYn: "",
+    shopNm: "",
+    callbackUrl: "",
+    regularpayYn: "",
+    mercntParam1: "",
+    signature: "",
+  };
+
+  const [paymentsParameters, setPaymentsParameters] =
+    useState<IGetPaymentsParametersResponse>(initialPaymentsParametersValue);
+
+  const getParameters = async () => {
+    const res = await getPaymentsParameters({
+      productCount,
+      accountAddress,
+      collectionAddress,
+    });
+    return res;
+  };
+
+  const handleSubmit = async (info: React.FormEvent<HTMLFormElement>) => {
+    //TODO 1: 수량 , collectionAddress, collectionTitle 백엔드에 POST로 넘겨주기
+
+    const res = await getPaymentsParameters({
+      productCount,
+      accountAddress,
+      collectionAddress,
+    });
+
+    console.log("res: ", res);
 
     //TODO 2: 백엔드에서 받은 response를 가지고 formData 세팅 후, SettlePay.execute(info obj)로 결제창 띄우기
     info.preventDefault();
-    console.log(info.target);
-    SettlePay.execute(info.target);
+    // console.log(info.target);
+    // SettlePay.execute(info.target);
 
     //TODO 2: 결제 팝업창 띄운 다음에 백엔드에 API GET요청 (최종 결제 응답을 받기 위해)
-
-    //TODO 3: 백엔드에서 결제요청까지 한 뒤에 응답이 오면 일단 window.close()로 팝업창 닫기
-  };
-
-  const [email, setEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const [payments, setPayments] = useState();
-
-  const [price, setPrice] = useState("");
-  const [signature, setSignature] = useState("");
-  const [trTime, setTrTime] = useState("");
-  const [ordNo, setOrdNo] = useState("test5909");
-
-  const getHashingStr = async () => {
-    const currentDate = new Date();
-    const currentHours = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
-    const currentSeconds = currentDate.getSeconds();
-
-    const currentTime = `${currentHours}${currentMinutes}${currentSeconds}`;
-    setTrTime(currentTime);
-    const hashingPrice = await getHash("1000");
-    setPrice(hashingPrice);
-    const hashingSignature = await getEncode(
-      `M2286221${ordNo}20221017${currentTime}1000$SETTLEBANKISGOODSETTLEBANKISGOOD`
-    );
-    console.log(hashingSignature);
-    setSignature(hashingSignature);
-  };
-
-  const createFormData = () => {
-    formData.append("hdInfo", "IA_AUTHPAGE_1.0_1.0");
-    formData.append("apiVer", "1.0");
-    formData.append("processType", "D");
-    formData.append("mercntId", "M2286221");
-    formData.append("ordNo", "test2434");
-    formData.append("trDay", "20221018");
-    formData.append("trTime", "112434");
-    formData.append("trPrice", "71e07123bc5bb2ca7d9a5cfd851cd327");
-    formData.append("productNm", "test");
-    formData.append("dutyFreeYn", "N");
-    formData.append("criPsblYn", "Y");
-    formData.append("addDeductionYn", "N");
-    formData.append("shopNm", "test shop");
-    formData.append("callbackUrl", "https://payments-poc.vercel.app/callback");
-    formData.append("regularpayYn", "N");
-    formData.append(
-      "signature",
-      "cd751400e5ecd83bb4272f0d9f9bb56ca71883b756fd561b4896552f0c806542"
-    );
-    SettlePay.execute(formData);
-
-    console.log(formData);
   };
 
   return (
@@ -82,96 +79,70 @@ export const Home = () => {
           handleSubmit(e);
         }}
       >
-        {/* <label
-          htmlFor="name"
-          className="border-2 border-red-600 w-[300px] flex justify-between items-center"
-        >
-          <div>고객 이름</div>
-          <input
-            name="name"
-            value=""
-            className="border-2 border-red-600 w-[200px]"
-          />
-        </label>
-        <label
-          htmlFor="email"
-          className="border-2 border-red-600 w-[300px] flex justify-between items-center"
-        >
-          <div>이메일</div>
-          <input
-            name="email"
-            value=""
-            className="border-2 border-red-600 w-[200px]"
-          />
-        </label> */}
-
-        <input type="hidden" name="hdInfo" value="IA_AUTHPAGE_1.0_1.0" />
-
-        <input type="hidden" name="apiVer" value="1.0" />
-
-        <input type="hidden" name="processType" value="D" />
-
-        <input type="hidden" name="mercntId" value="M2286221" />
-
-        <input type="hidden" name="ordNo" value="test0524" />
-
-        <input type="hidden" name="trDay" value="20221018" />
-
-        <input type="hidden" name="trTime" value="150524" />
-
+        <input type="hidden" name="hdInfo" value={paymentsParameters.hdInfo} />
+        <input type="hidden" name="apiVer" value={paymentsParameters.apiVer} />
+        <input
+          type="hidden"
+          name="processType"
+          value={paymentsParameters.processType}
+        />
+        <input
+          type="hidden"
+          name="mercntId"
+          value={paymentsParameters.mercntId}
+        />
+        <input type="hidden" name="ordNo" value={paymentsParameters.ordNo} />
+        <input type="hidden" name="trDay" value={paymentsParameters.trDay} />
+        <input type="hidden" name="trTime" value={paymentsParameters.trTime} />
         <input
           type="hidden"
           name="trPrice"
-          value="71e07123bc5bb2ca7d9a5cfd851cd327"
+          value={paymentsParameters.trPrice}
         />
-
-        <input type="hidden" name="taxPrice" value="" />
-
-        <input type="hidden" name="vatPrice" value="" />
-
-        <input type="hidden" name="dutyFreePrice" value="" />
-
-        <input type="hidden" name="productNm" value="test" />
-
-        <input type="hidden" name="dutyFreeYn" value="N" />
-
-        <input type="hidden" name="criPsblYn" value="Y" />
-
-        <input type="hidden" name="addDeductionYn" value="N" />
-
-        <input type="hidden" name="shopNm" value="test shop" />
-
-        <input type="hidden" name="cphoneNo" value="" />
-
-        <input type="hidden" name="email" value="" />
-
-        <input type="hidden" name="custCi" value="" />
-
+        <input
+          type="hidden"
+          name="productNm"
+          value={paymentsParameters.productNm}
+        />
+        <input
+          type="hidden"
+          name="dutyFreeYn"
+          value={paymentsParameters.dutyFreeYn}
+        />
+        <input
+          type="hidden"
+          name="criPsblYn"
+          value={paymentsParameters.criPsblYn}
+        />
+        <input
+          type="hidden"
+          name="addDeductionYn"
+          value={paymentsParameters.addDeductionYn}
+        />
+        <input type="hidden" name="shopNm" value={paymentsParameters.shopNm} />
         <input
           type="hidden"
           name="callbackUrl"
-          value="https://payments-poc.vercel.app/callback"
+          value={paymentsParameters.callbackUrl}
         />
-
-        <input type="hidden" name="cancelUrl" value="" />
-
-        <input type="hidden" name="regularpayYn" value="N" />
-
-        <input type="hidden" name="mercntParam1" value="" />
-
-        <input type="hidden" name="mercntParam2" value="" />
-
-        <input type="hidden" name="payLimitCd" value="" />
-
+        <input
+          type="hidden"
+          name="regularpayYn"
+          value={paymentsParameters.regularpayYn}
+        />
+        <input
+          type="hidden"
+          name="mercntParam1"
+          value={paymentsParameters.mercntParam1}
+        />
         <input
           type="hidden"
           name="signature"
-          value="26cf0d053fb9973d8f4a3d2870013b789cb665446da8bf7d43a747244072b4a8"
+          value={paymentsParameters.signature}
         />
 
         <button type="submit">결제요청</button>
       </form>
-      <button onClick={getHashingStr}>해싱</button>
     </div>
   );
 };
