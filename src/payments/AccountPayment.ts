@@ -15,14 +15,15 @@ const Util = {
 
 export const SettlePay = {
   getUrl: function (obj: any) {
-    let processType;
+    console.log("getUrl 실행");
+    let processType = "D";
     let url = "";
     try {
-      processType = obj.processType.value;
-      if (processType == "D" || processType == "M" || processType == "A") {
+      // processType = obj.processType.value;
+      if (processType === "D" || processType === "M" || processType === "A") {
         //url = serverContext + "/std/init.do";
         url = serverContext + "/init.do";
-      } else if (processType == "W") {
+      } else if (processType === "W") {
         //휘슬전용
         url = serverContext + "/whistle/init.do";
       }
@@ -31,7 +32,8 @@ export const SettlePay = {
       url = serverContext + "/verifyMember.do";
     }
 
-    return url;
+    // return url;
+    return "https://tbezauth.settlebank.co.kr/init.do";
   },
   pay: function (obj: any) {
     let viewType;
@@ -43,19 +45,20 @@ export const SettlePay = {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     viewType === null ? "popup" : viewType;
-    if (viewType == "popup") {
+    if (viewType === "popup") {
       this.popup(obj);
-    } else if (viewType == "self") {
+    } else if (viewType === "self") {
       this.self(obj);
     }
   },
 
   // 결제창 호출
   execute: function (obj: any) {
+    // console.log("excute: ", obj);
     if (Util.isMobile()) {
       SettlePay.self(obj);
     } else {
-      SettlePay.popup(obj);
+      return SettlePay.popup(obj);
     }
   },
 
@@ -97,7 +100,7 @@ export const SettlePay = {
     let stdpaywin = window.open("", obj.name, windowStatus);
 
     setTimeout(function () {
-      if (stdpaywin == null) {
+      if (stdpaywin === null) {
         alert(Msg.dev_err1);
       }
     }, 1000);
@@ -105,7 +108,10 @@ export const SettlePay = {
     obj.action = SettlePay.getUrl(obj);
     obj.method = "POST";
     obj.target = obj.name;
-    obj.submit();
+
+    return obj;
+    // console.log("obj :: ", obj);
+    // console.log(obj.submit());
   },
   self: function (obj: any) {
     obj.action = SettlePay.getUrl(obj);
@@ -116,7 +122,7 @@ export const SettlePay = {
   mobile: function (obj: any) {
     let stdpaywin = window.open("", obj.name, "");
     setTimeout(function () {
-      if (stdpaywin == null) {
+      if (stdpaywin === null) {
         alert(Msg.dev_err1);
       }
     }, 1000);
@@ -145,7 +151,7 @@ export const SettlePay = {
       }
     } else if (
       userAgent.indexOf("AppleWebKit") > 0 &&
-      userAgent.indexOf("Chrome") == -1
+      userAgent.indexOf("Chrome") === -1
     ) {
       windowStatus =
         "left=100, top=100, height=610, width=420, location=no, menubar=no, scrollbars=auto, status=no, titlebar=no, toolbar=no, resizable=no";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import getPaymentsParameters, {
   IGetPaymentsParametersResponse,
 } from "./apis/getPaymentsParameters";
@@ -14,6 +14,10 @@ export const Home = () => {
   const [accountAddress, setAccountAddress] = useState(
     "0x7810107ea3a38639b1ca9b1600f8a3c17c8294de"
   );
+
+  // useEffect(() => {
+  //   console.log(paymentsParameters);
+  // }, []);
 
   //UI를 띄우기 위해 필요한 값 START
   const initialPaymentsParametersValue = {
@@ -40,14 +44,11 @@ export const Home = () => {
     useState<IGetPaymentsParametersResponse>(initialPaymentsParametersValue);
 
   const handleSubmit = async (info: React.FormEvent<HTMLFormElement>) => {
-    //TODO 1: 수량 , collectionAddress, collectionTitle 백엔드에 POST로 넘겨주기
-
     const res = await getPaymentsParameters({
       productCount,
       accountAddress,
       collectionAddress,
     });
-
     setPaymentsParameters({
       hdInfo: res.data.hdInfo,
       apiVer: res.data.apiVer,
@@ -68,10 +69,11 @@ export const Home = () => {
       signature: res.data.signature,
     });
 
-    console.log("res: ", res.data);
-    info.preventDefault();
-    console.log(info.target);
-    SettlePay.execute(info.target);
+    // console.log("res: ", res.data);
+    // console.log(info.target);
+    const obj = SettlePay.execute(info.target);
+    console.log("obj ::: ", obj);
+    obj.submit();
   };
 
   return (
@@ -80,6 +82,7 @@ export const Home = () => {
         name="sampleFm"
         className="flex flex-col gap-10 justify-center items-center pt-10"
         onSubmit={(e) => {
+          e.preventDefault();
           handleSubmit(e);
         }}
       >
