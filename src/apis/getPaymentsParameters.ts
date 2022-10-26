@@ -25,12 +25,10 @@ export interface IGetPaymentsParametersResponse {
 }
 const getPaymentsParameters = async ({
   productCount,
-  collectionAddress,
-  accountAddress,
+  originalsId,
 }: {
   productCount: number;
-  collectionAddress: string;
-  accountAddress: string;
+  originalsId: string;
 }) => {
   const { data: data } = await axios.post<
     IBaseResponse<IGetPaymentsParametersResponse>
@@ -38,8 +36,7 @@ const getPaymentsParameters = async ({
     "https://kkr-payment-seokjae.goerli-alpha.kn.croffle.me/api/bank-payments/checkout",
     {
       productCount,
-      collectionAddress,
-      accountAddress,
+      originalsId,
     }
   );
   return data;

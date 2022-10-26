@@ -46,8 +46,7 @@ export const Home = () => {
   const handleSubmit = async (info: React.FormEvent<HTMLFormElement>) => {
     const res = await getPaymentsParameters({
       productCount,
-      accountAddress,
-      collectionAddress,
+      originalsId: "medi-society",
     });
     setPaymentsParameters({
       hdInfo: res.data.hdInfo,
