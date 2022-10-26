@@ -71,9 +71,7 @@ export const Home = () => {
 
     // console.log("res: ", res.data);
     // console.log(info.target);
-    const obj = SettlePay.execute(info.target);
-    console.log("obj ::: ", obj);
-    obj.submit();
+    // window.submit(info.target);
   };
 
   return (

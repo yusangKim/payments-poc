@@ -16,10 +16,10 @@ const Util = {
 export const SettlePay = {
   getUrl: function (obj: any) {
     console.log("getUrl 실행");
-    let processType = "D";
+    let processType;
     let url = "";
     try {
-      // processType = obj.processType.value;
+      processType = obj.processType.value;
       if (processType === "D" || processType === "M" || processType === "A") {
         //url = serverContext + "/std/init.do";
         url = serverContext + "/init.do";
@@ -32,8 +32,7 @@ export const SettlePay = {
       url = serverContext + "/verifyMember.do";
     }
 
-    // return url;
-    return "https://tbezauth.settlebank.co.kr/init.do";
+    return url;
   },
   pay: function (obj: any) {
     let viewType;
@@ -54,11 +53,11 @@ export const SettlePay = {
 
   // 결제창 호출
   execute: function (obj: any) {
-    // console.log("excute: ", obj);
+    console.log("excute: ", obj);
     if (Util.isMobile()) {
       SettlePay.self(obj);
     } else {
-      return SettlePay.popup(obj);
+      SettlePay.popup(obj);
     }
   },
 
@@ -73,6 +72,7 @@ export const SettlePay = {
 
   // 팝업
   popup: function (obj: any) {
+    console.log("popup: ", obj);
     const userAgent = new String(navigator.userAgent);
     let windowStatus = "";
     if (userAgent.indexOf("Trident") > 0) {
@@ -97,6 +97,7 @@ export const SettlePay = {
       windowStatus =
         "left=100, top=100, height=610, width=420, location=no, menubar=no, scrollbars=auto, status=no, titlebar=no, toolbar=no, resizable=no";
     }
+    console.log("windowStatus: ", windowStatus);
     let stdpaywin = window.open("", obj.name, windowStatus);
 
     setTimeout(function () {
@@ -105,13 +106,14 @@ export const SettlePay = {
       }
     }, 1000);
 
-    obj.action = SettlePay.getUrl(obj);
+    console.log("stdpaywin: ", stdpaywin);
+
+    console.log("스크립트 실행");
+
+    obj.action = "https://tbezauth.settlebank.co.kr/init.do";
     obj.method = "POST";
     obj.target = obj.name;
-
-    return obj;
-    // console.log("obj :: ", obj);
-    // console.log(obj.submit());
+    obj.submit();
   },
   self: function (obj: any) {
     obj.action = SettlePay.getUrl(obj);

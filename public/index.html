@@ -46,4 +46,9 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    window.submit = (info) => {
+      window.SettlePay.execute(info);
+    };
+  </script>
 </html>
