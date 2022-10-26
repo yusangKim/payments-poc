@@ -35,7 +35,7 @@ const getPaymentsParameters = async ({
   const { data: data } = await axios.post<
     IBaseResponse<IGetPaymentsParametersResponse>
   >(
-    "kkr-payment-seokjae.goerli-alpha.kn.croffle.me/api/bank-payments/checkout",
+    "https://kkr-payment-seokjae.goerli-alpha.kn.croffle.me/api/bank-payments/checkout",
     {
       productCount,
       collectionAddress,
